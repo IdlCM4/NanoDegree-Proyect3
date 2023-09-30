@@ -53,9 +53,11 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
       - slack/notify:
+          channel: fail
           event: fail
           template: basic_fail_1
       - slack/notify:
+          channel: success
           event: pass
           template: basic_success_1
 
@@ -77,9 +79,11 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
       - slack/notify:
+          channel: fail
           event: fail
           template: basic_fail_1
       - slack/notify:
+          channel: success
           event: pass
           template: basic_success_1    
 
@@ -100,9 +104,11 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-test
       - slack/notify:
+          channel: fail
           event: fail
           template: basic_fail_1
       - slack/notify:
+          channel: success
           event: pass
           template: basic_success_1
                 
@@ -123,9 +129,11 @@ jobs:
           paths: [backend/node_modules]
           key: backend-test
       - slack/notify:
+          channel: fail
           event: fail
           template: basic_fail_1
       - slack/notify:
+          channel: success
           event: pass
           template: basic_success_1
             
@@ -149,9 +157,11 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-scan
       - slack/notify:
+          channel: fail
           event: fail
           template: basic_fail_1
       - slack/notify:
+          channel: success
           event: pass
           template: basic_success_1
 
@@ -175,9 +185,11 @@ jobs:
           paths: [backend/node_modules]
           key: backend-scan
       - slack/notify:
+          channel: fail
           event: fail
           template: basic_fail_1
       - slack/notify:
+          channel: success
           event: pass
           template: basic_success_1
 
