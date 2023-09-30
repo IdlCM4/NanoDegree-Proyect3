@@ -231,7 +231,8 @@ jobs:
           command: |
             public_ip=$(aws ec2 describe-instances \
             --filters "Name=tag:aws:cloudformation:stack-name, Values=udapeople-backend-<<pipeline.parameters.workflow_id>>" \
-            --query "Reservations[0].Instancer[0].PublicIpAddress")
+            --query "Reservations[0].Instancer[0].PublicIpAddress" \
+            --region us-east-1 )
             echo $public_ip >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
             yum install -y tar gzip
