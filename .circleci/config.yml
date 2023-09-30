@@ -2,6 +2,9 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.12.5
 
+parameters:
+  workflow_id:
+    type: string
 # commands:
 #   destroy-environment:
 #     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -200,6 +203,9 @@ jobs:
       - checkout
       - run:
           name: Ensure back-end infrastructure exists
+          environment:
+            AWS_CLI_STR_ACCESS_KEY: $AWS_ACCESS_KEY_ID
+            AWS_CLI_STR_PROFILE_NAME: $AWS_SECRET_ACCESS_KEY
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
