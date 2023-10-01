@@ -1,0 +1,21 @@
+- name: Actualizar paquetes
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Instalar Python
+  apt:
+    name: python3
+    state: present
+
+- name: Instalar Node.js y npm
+  apt:
+    name: 
+      - nodejs
+      - npm
+    state: present
+
+- name: Instalar pm2 globalmente
+  npm:
+    name: pm2@latest
+    global: yes
