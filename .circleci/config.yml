@@ -397,7 +397,7 @@ jobs:
           name: Backend smoke test.
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            export APLI_URL="http://&{BACKEND_IP}"
+            export APLI_URL="http://${BACKEND_IP}"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
