@@ -299,33 +299,65 @@ jobs:
       - run:
           name: Send migration results to kvdb.io
           command: |
-            if grep -q "success" ~/project/backend/migrations.txt
+            if grep -q "suchas been executed successfully" ~/project/backend/migrations.txt
             then
               curl --insecure https://kvdb.io/KihVAzcKQYJh1jSzR8GJww/migration_<<pipeline.parameters.workflow_id>> -d '1'
             fi
       - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}.    
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}. 
+      - slack/notify:
+          channel: fail
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: success
+          event: pass
+          template: basic_success_1    
 
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      - image: python:3.7-alpine3.16
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update --no-cache tar gzip nodejs npm 
+            apk add python3 py3-pip 
+            pip3 install awscli --upgrade 
+      - run:
+          name: Get backend url
+          environment:
+            AWS_CLI_STR_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_CLI_STR_PROFILE_NAME: $AWS_SECRET_ACCESS_KEY
+          command: |
+            export public_ip=$(aws ec2 describe-instances \
+            --filters "Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-<<pipeline.parameters.workflow_id>>" \
+            --query "Reservations[0].Instances[0].PublicIpAddress")
+            export API_URL="http://${public_ip}:3030"
+            echo "API_URL = ${API_URL}"
+            echo "API_URL=http://${public_ip}:3030" >> frontend/.env
+            cat frontend/.env
+      - run:
+          name: Deploy frontend objects
+          command: |
+            cd frontend
+            npm install 
+            npm run build 
+            tar -czvf artifact-"<<pipeline.parameters.workflow_id>>".tar.gz dist
+            aws s3 cp dist s3://udapeople-<<pipeline.parameters.workflow_id>> --recursive
+      - destroy-environment:
+          workflow_id: <<pipeline.parameters.workflow_id>>
+      - revert-migrations:
+          workflow_id: <<pipeline.parameters.workflow_id>>
+      - slack/notify:
+          channel: fail
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: success
+          event: pass
+          template: basic_success_1 
                     
 #   deploy-backend:
 #     docker:
@@ -432,8 +464,9 @@ workflows:
       - run-migrations:
           requires: [configure-infrastructure]
           context: slack-secrets
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
+          context: slack-secrets
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
