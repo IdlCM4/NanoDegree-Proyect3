@@ -271,14 +271,7 @@ jobs:
           command: |         
             cd .circleci/ansible 
             ansible-playbook -i inventory.txt configure-server.yml
-      - slack/notify:
-          channel: fail
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: success
-          event: pass
-          template: basic_success_1        
+        
 
   # run-migrations:
   #   docker:
@@ -428,7 +421,6 @@ workflows:
           context: slack-secrets
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-          context: slack-secrets
       # - run-migrations:
       #     requires: [configure-infrastructure]
       #     context: slack-secrets
