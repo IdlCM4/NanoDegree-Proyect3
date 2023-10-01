@@ -22,7 +22,6 @@
       changed_when: false
 
   environment:
-    - TYPEORM_DRIVER_EXTRA: "{{ lookup('env', 'TYPEORM_DRIVER_EXTRA')}}"
     - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"  
     - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
     - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
