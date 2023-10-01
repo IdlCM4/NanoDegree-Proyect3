@@ -396,19 +396,30 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            export BACKEND_IP=$(aws ec2 describe-instances \
-            --query 'Reservations[0].Instances[0].PublicIpAddress' \
-            --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-<<pipeline.parameters.workflow_id>> \
-            )
-            export API_URL=$(echo "http://${BACKEND_IP}:3030" | sed  's/"//g')
-            echo  $API_URL
-            if curl --connect-timeout 5 "${API_URL}/api/status" | grep "ok"; then return 0; else return 0; fi
+            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            export APLI_URL="http://&{BACKEND_IP}"
+            echo "${API_URL}"
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+              return 0
+            else
+              return 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
-            export URL="http://udapeople-<<pipeline.parameters.workflow_id>>.s3.${AWS_DEFAULT_REGION}.amazonaws.com/index.html#/employees"            
-            echo $URL
-            if curl ${URL} | grep "Welcome"; then return 0; else return 1; fi
+            # export URL="http://udapeople-<<pipeline.parameters.workflow_id>>.s3.${AWS_DEFAULT_REGION}.amazonaws.com/index.html#/employees"            
+            # echo $URL
+            # if curl ${URL} | grep "Welcome"; then return 0; else return 1; fi
+            URL="http://udapeople-${CIRCLE_WORKFLOW_1D:0:7}.s3-website-us-east-1.amazonaws.com/#/employes"
+            echo ${URL}
+            if curl -s ${URL} @ grep "Welcome"
+            then
+              #change this to 0 after the job fails
+              return 1
+            else
+              return 1
+            fi
       - destroy-environment:
           workflow_id: <<pipeline.parameters.workflow_id>>
       # - revert-migrations:
