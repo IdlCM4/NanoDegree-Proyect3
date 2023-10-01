@@ -397,10 +397,9 @@ jobs:
           name: Backend smoke test.
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
-            --query 'Reservations[0].Instances[0].PublicIpAddress' \
             --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-<<pipeline.parameters.workflow_id>> \
-            )
-            export API_URL=$(echo "http://${BACKEND_IP}:3030" | sed  's/"//g')
+            --query 'Reservations[0].Instances[0].PublicIpAddress')
+            export API_URL="http://${public_ip}:3030"
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
             then
