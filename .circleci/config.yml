@@ -20,7 +20,7 @@ commands:
           when: on_fail
           command: |
             echo "Destroying environment: << parameters.workflow_id >> "
-            # aws cloudformation delete-stack \
+            aws cloudformation delete-stack \
             --stack-name udapeople-backend-<<pipeline.parameters.workflow_id>>
             aws s3 rm s3://udapeople-<<pipeline.parameters.workflow_id>> --recursive
             aws cloudformation delete-stack \
@@ -315,7 +315,7 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            npm run migrations >> migrations.txt
+            sudo npm run migrations >> migrations.txt
             cat migrations.txt
       - run:
           name: Send migration results to kvdb.io
