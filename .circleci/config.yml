@@ -282,6 +282,8 @@ jobs:
             echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
             echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
             echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+            echo TYPEORM_DRIVER_EXTRA=$TYPEORM_DRIVER_EXTRA >> "backend/.env"
+            cat backend/.env
 
             cd .circleci/ansible 
             cat inventory.txt
