@@ -470,7 +470,7 @@ jobs:
           workflow_id: <<pipeline.parameters.workflow_id>>
 
 cleanup:
-    - image: amazon/aws-cli
+      - image: amazon/aws-cli
     steps:
       - checkout
       - run:
