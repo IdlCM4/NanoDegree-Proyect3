@@ -370,8 +370,8 @@ jobs:
             aws s3 cp dist s3://udapeople-<<pipeline.parameters.workflow_id>> --recursive
       - destroy-environment:
           workflow_id: <<pipeline.parameters.workflow_id>>
-      # - revert-migrations:
-      #     workflow_id: <<pipeline.parameters.workflow_id>>
+      - revert-migrations:
+          workflow_id: <<pipeline.parameters.workflow_id>>
                     
   deploy-backend:
     docker:
@@ -469,7 +469,7 @@ jobs:
       - revert-migrations:
           workflow_id: <<pipeline.parameters.workflow_id>>
 
-cleanup:
+  cleanup:
     docker:
       - image: amazon/aws-cli
     steps:
