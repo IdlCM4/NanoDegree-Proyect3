@@ -460,7 +460,7 @@ jobs:
             --no-paginate --output text)
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --region eu-west-3 \
+            --region us-east-1 \
             --stack-name InitialStack \
             --parameter-overrides ID=<<pipeline.parameters.workflow_id>> \
             --tags project=udapeople
