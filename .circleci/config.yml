@@ -217,7 +217,7 @@ jobs:
               --tags project=udapeople \
               --stack-name udapeople-backend-<<pipeline.parameters.workflow_id>>  \
               --region us-east-1 \
-              --parameter-overrides workflow_id=<<pipeline.parameters.workflow_id>> 
+              --parameter-overrides ID=<<pipeline.parameters.workflow_id>> 
       - run:
           name: Ensure front-end infrastructure exist
           command: |
