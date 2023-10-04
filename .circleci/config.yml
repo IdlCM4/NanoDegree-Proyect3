@@ -434,14 +434,14 @@ jobs:
             export URL="http://udapeople-<<pipeline.parameters.workflow_id>>.s3.${AWS_DEFAULT_REGION}.amazonaws.com/index.html#/employees"            
             echo $URL
             if curl ${URL} | grep "Welcome"; then return 0; else return 1; fi
-      # - destroy-environment:
-      #     workflow_id: <<pipeline.parameters.workflow_id>>
+      - destroy-environment:
+          workflow_id: <<pipeline.parameters.workflow_id>>
       - revert-migrations:
           workflow_id: <<pipeline.parameters.workflow_id>>  
 
   cloudfront-update:
     docker:
-        - image: awscircleci/node:14
+        - image: circleci/node:14
     steps:
       - checkout
       - run:
@@ -461,7 +461,7 @@ jobs:
             --template-file .circleci/files/cloudfront.yml \
             --region us-east-1 \
             --stack-name InitialStack \
-            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides WorkflowID="udapeople-<<pipeline.parameters.workflow_id>> " \
             --tags project=udapeople
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
