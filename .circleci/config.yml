@@ -215,9 +215,9 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
-              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}  \
+              --stack-name udapeople-backend-<<pipeline.parameters.workflow_id>>  \
               --region us-east-1 \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
+              --parameter-overrides workflow_id=<<pipeline.parameters.workflow_id>> 
       - run:
           name: Ensure front-end infrastructure exist
           command: |
@@ -225,13 +225,13 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
               --region us-east-1 \
-              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}  
+              --stack-name udapeople-frontend-<<pipeline.parameters.workflow_id>> \
+              --parameter-overrides ID=<<pipeline.parameters.workflow_id>> 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
             public_ip=$(aws ec2 describe-instances \
-            --filters "Name=tag:aws:cloudformation:stack-name, Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --filters "Name=tag:aws:cloudformation:stack-name, Values=udapeople-backend-<<pipeline.parameters.workflow_id>>}" \
             --query "Reservations[*].Instances[*].PublicIpAddress" \
             --region us-east-1 )
             echo $public_ip >> .circleci/ansible/inventory.txt
@@ -242,7 +242,7 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
+          workflow_id: <<pipeline.parameters.workflow_id>> 
       - slack/notify:
           channel: fail
           event: fail
