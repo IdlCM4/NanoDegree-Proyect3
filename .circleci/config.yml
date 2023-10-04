@@ -231,7 +231,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             public_ip=$(aws ec2 describe-instances \
-            --filters "Name=tag:aws:cloudformation:stack-name, Values=udapeople-backend-<<pipeline.parameters.workflow_id>>}" \
+            --filters "Name=tag:aws:cloudformation:stack-name, Values=udapeople-backend-<<pipeline.parameters.workflow_id>>" \
             --query "Reservations[*].Instances[*].PublicIpAddress" \
             --region us-east-1 )
             echo $public_ip >> .circleci/ansible/inventory.txt
