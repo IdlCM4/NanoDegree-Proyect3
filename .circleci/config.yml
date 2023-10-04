@@ -573,5 +573,5 @@ workflows:
           filters:
             branches:
               only: [main]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cleanup:
+      #     requires: [cloudfront-update]
