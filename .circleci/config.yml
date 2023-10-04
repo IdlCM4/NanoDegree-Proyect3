@@ -358,7 +358,7 @@ jobs:
             --query "Reservations[0].Instances[0].PublicIpAddress")
             export API_URL="http://${public_ip}:3030"
             echo "API_URL = ${API_URL}"
-            export API_URL=$(echo "http://${BACKEND_IP}:3030" | sed  's/"//g')
+            export API_URL=$(echo "http://${public_ip}:3030" | sed  's/"//g')
             echo $API_URL >> frontend/.env
             cat frontend/.env
       - run:
