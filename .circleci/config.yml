@@ -441,7 +441,7 @@ jobs:
 
   cloudfront-update:
     docker:
-        - image: aws
+        - image: awscircleci/node:14
     steps:
       - checkout
       - run:
