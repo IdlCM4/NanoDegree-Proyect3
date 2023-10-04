@@ -9,6 +9,8 @@
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
   environment:
+    - NODE_ENV: production
+    - ENVIRONMENT: production
     - TYPEORM_DRIVER_EXTRA: "{{ lookup('env', 'TYPEORM_DRIVER_EXTRA')}}"
     - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"
     - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
