@@ -34,6 +34,7 @@ export class HttpService {
       },
       body: JSON.stringify(data),
       method: 'POST',
+      mode: 'no-cors',
     });
     switch (response.status) {
       case 500:
@@ -51,6 +52,7 @@ export class HttpService {
       },
       body: JSON.stringify(data),
       method: 'PUT',
+      mode: 'no-cors',
     });
     switch (response.status) {
       case 500:
@@ -68,6 +70,7 @@ export class HttpService {
       },
       // body: JSON.stringify(data),
       method: 'DELETE',
+      mode: 'no-cors',
     });
     switch (response.status) {
       case 500:
